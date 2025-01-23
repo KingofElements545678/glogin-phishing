@@ -34,4 +34,4 @@ def logger1(data, func):
     if eval(func) == 2:
       return redirect("https://accounts.google.com")
 
-app.run(debug=False,'0.0.0.0')
+app.run(debug=False,host='0.0.0.0')
